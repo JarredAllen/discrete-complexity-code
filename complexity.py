@@ -82,6 +82,30 @@ def max_clique_size(graph):
             return i-1
     return len(graph)
 
+def num_paths(graph):
+    """
+    Computes the number of paths between any pair of vertices
+    in the graph."""
+    current = set()
+    for i in range(len(graph)):
+        for j in range(len(graph)):
+            if graph[i][j]:
+                current.add((i, j))
+    poss = set()
+    count = 0
+    while current:
+        for path in current:
+            for i in range(len(graph)):
+                if graph[path[-1]][i] and i not in path:
+                    poss.add(path+(i,))
+        count += len(current)
+        current = poss
+        poss = set()
+    return count
+
+def mean_num_paths(graph):
+    return num_paths(graph) / len(graph) / (len(graph)-1)
+
 def complexity(graph):
     """Returns the complexity of the graph."""
-    return np.var(path_lengths(graph))*max_clique_size(graph)
+    return np.var(path_lengths(graph))*mean_num_paths(graph)
