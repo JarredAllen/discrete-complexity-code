@@ -44,7 +44,7 @@ def shortest_paths(graph):
                 dists[i][j] = min(dists[i][j], dists[i][k] + dists[k][j])
     return dists
 
-def path_lengths(graph, reweight=True):
+def path_lengths(graph, reweight=False):
     """
     Computes a numpy array of the lengths of paths which are present in
     the graph. It takes the input in adjacency-matrix form, and outputs
@@ -57,7 +57,8 @@ def path_lengths(graph, reweight=True):
     n = len(graph)
     for i in range(n):
         for j in range(i):
-            ans.append(dists[i][j])
+            if dists[i][j] != inf:
+                ans.append(dists[i][j])
     if reweight:
         return np.array(ans)/max(ans)
     else:
@@ -108,4 +109,4 @@ def mean_num_paths(graph):
 
 def complexity(graph):
     """Returns the complexity of the graph."""
-    return np.var(path_lengths(graph))*mean_num_paths(graph)
+    return np.var(path_lengths(graph))#*mean_num_paths(graph)
